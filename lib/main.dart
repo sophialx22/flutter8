@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'di/di.dart';
 import 'routes.dart';
 import 'pages/loading_page.dart';
 import 'pages/login_page.dart';
@@ -8,6 +9,7 @@ import 'pages/detail_page.dart';
 import 'pages/profile_page.dart';
 
 void main() {
+  setupDI();
   runApp(const MyApp());
 }
 

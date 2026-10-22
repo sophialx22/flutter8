@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
+import '../../../data/home_repository.dart';
 import '../../../models/home_item.dart';
-import '../../../mock/home_data.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
 
+@injectable
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc() : super(const HomeInitial()) {
+  final HomeRepository _repository;
+
+  HomeBloc(this._repository) : super(const HomeInitial()) {
     on<LoadHomeData>(_onLoadHomeData);
   }
 
@@ -16,13 +20,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       Emitter<HomeState> emit,
       ) async {
     emit(const HomeLoading());
-
     try {
-      await Future.delayed(const Duration(milliseconds: 500));
-
-      emit(HomeLoaded(homeItems, homeImages));
+      final items = await _repository.getHomeItems();
+      final images = await _repository.getHomeImages();
+      emit(HomeLoaded(items, images));
     } catch (e) {
-      emit(const HomeError('Не удалось загрузить данные'));
+      emit(const HomeError('Не удалось загрузить данные из БД'));
     }
   }
 }

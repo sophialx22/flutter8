@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import '../models/home_item.dart';
 
 class DetailPage extends StatelessWidget {
   const DetailPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final title = ModalRoute.of(context)?.settings.arguments as String? ?? 'Пункт N';
+    final item = ModalRoute.of(context)?.settings.arguments as HomeItem?;
+    final title = item?.title ?? 'Пункт N';
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
